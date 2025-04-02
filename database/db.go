@@ -1,11 +1,14 @@
-package main
+package database
 
 import (
+	"fmt"
+	"log"
+	"os"
+
+	"github.com/fusionxx23/ecommerce-go/models"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"log"
-	"os"
 )
 
 var DB *gorm.DB
@@ -18,10 +21,14 @@ func ConnectDatabase() {
 	}
 	// Access environment variables
 	databaseURL := os.Getenv("DATABASE_URL")
+	fmt.Println(databaseURL)
 	DB, err = gorm.Open(postgres.Open(databaseURL), &gorm.Config{})
 	// Establishing the connection
 	if err != nil {
 		log.Fatalf("Unable to connect to database: %v\n", err)
 	}
+}
 
+func SyncDb() {
+	DB.AutoMigrate(&models.Cart{}, &models.CartItem{}, &models.CheckoutSession{}, &models.DeliveryInfo{}, &models.Order{}, &models.Product{}, &models.User{})
 }
