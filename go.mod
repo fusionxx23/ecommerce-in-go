@@ -1,4 +1,4 @@
-module ecommerce-go
+module github.com/fusionxx23/ecommerce-go
 
 go 1.24.1
 
