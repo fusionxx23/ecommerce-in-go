@@ -4,10 +4,10 @@ import "gorm.io/gorm"
 
 type OrderItem struct {
 	gorm.Model
-	ID        uint
-	OrderID   uint `gorm:"not null"`
+	ID        int64
+	OrderID   int64 `gorm:"not null"`
 	Order     Order
-	ProductID uint `gorm:"not null"`
+	ProductID int64 `gorm:"not null"`
 	Product   Product
 	Quantity  int `gorm:"not null"`
 }

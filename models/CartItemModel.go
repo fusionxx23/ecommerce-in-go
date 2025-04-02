@@ -4,10 +4,10 @@ import "gorm.io/gorm"
 
 type CartItem struct {
 	gorm.Model
-	ID        uint
-	CartID    uint
+	ID        int64
+	CartID    int64
 	Cart      Cart
-	ProductID uint `gorm:"not null"`
+	ProductID int64 `gorm:"not null"`
 	Product   Product
 	Quantity  int `gorm:"not null"`
 }

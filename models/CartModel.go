@@ -7,6 +7,6 @@ import (
 type Cart struct {
 	gorm.Model
 	ID     int64
-	UserID uint
+	UserID int64
 	User   User
 }

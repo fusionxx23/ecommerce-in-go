@@ -7,6 +7,6 @@ type Order struct {
 	ID             int64
 	UserID         int64 `gorm:"not null"`
 	User           User
-	DeliveryInfoID uint `gorm:"not null"`
+	DeliveryInfoID int64 `gorm:"not null"`
 	DeliveryInfo   DeliveryInfo
 }
