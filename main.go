@@ -17,8 +17,10 @@ func init() {
 
 func main() {
 	r := mux.NewRouter()
-	s := r.PathPrefix("/auth").Subrouter()
-	controllers.AuthHandler(s)
+	auth := r.PathPrefix("/auth").Subrouter()
+	cart := r.PathPrefix("/cart").Subrouter()
+	controllers.AuthHandler(auth)
+	controllers.CartHandler(cart)
 	http.Handle("/", r)
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
