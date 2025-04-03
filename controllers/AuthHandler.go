@@ -13,11 +13,6 @@ func AuthHandler(s *mux.Router) {
 	s.HandleFunc("/{provider}/callback", callback)
 }
 
-type key int
-
-// ProviderParamKey can be used as a key in context when passing in a provider
-const ProviderParamKey key = iota
-
 func signInWithGoogle(w http.ResponseWriter, r *http.Request) {
 	gothic.BeginAuthHandler(w, r)
 }
