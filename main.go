@@ -1,20 +1,24 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
 
-	"github.com/fusionxx23/ecommerce-go/database"
+	"github.com/fusionxx23/ecommerce-go/controllers"
+	"github.com/fusionxx23/ecommerce-go/initializers"
+	"github.com/gorilla/mux"
 )
 
 func init() {
-	database.ConnectDatabase()
-	database.SyncDb()
+	initializers.ConnectDatabase()
+	initializers.SyncDb()
+	initializers.InitOAuth()
 }
-func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "Hello from the API!")
-	})
 
-	http.ListenAndServe(":8080", nil)
+func main() {
+	r := mux.NewRouter()
+	s := r.PathPrefix("/auth").Subrouter()
+	controllers.AuthHandler(s)
+	http.Handle("/", r)
+	log.Fatal(http.ListenAndServe(":8080", r))
 }
