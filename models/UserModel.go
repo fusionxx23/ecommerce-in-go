@@ -7,4 +7,5 @@ type User struct {
 	ID                    int64  `gorm:"primaryKey"`
 	Email                 string `gorm:"unique;not null"`
 	DefaultDeliveryInfoId int64
+	RefreshToken          string // for JWT refresh token
 }

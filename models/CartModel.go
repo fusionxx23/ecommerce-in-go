@@ -6,7 +6,8 @@ import (
 
 type Cart struct {
 	gorm.Model
-	ID     int64
-	UserID int64
-	User   User
+	ID        int64
+	UserID    int64 `gorm:"default:null"`
+	User      User
+	CartItems []CartItem
 }
