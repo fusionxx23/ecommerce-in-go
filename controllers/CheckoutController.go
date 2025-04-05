@@ -7,11 +7,11 @@ import (
 	"net/http"
 )
 
-func CartHandler(s *mux.Router) {
-	s.HandleFunc("", getCart).Methods("GET")
+func CheckoutHandler(s *mux.Router) {
+	s.HandleFunc("", getCheckout).Methods("GET")
 }
 
-func getCart(w http.ResponseWriter, r *http.Request) {
+func getCheckout(w http.ResponseWriter, r *http.Request) {
 	// Implement logic to get the cart
 	cartCookie, err := r.Cookie("cart")
 	if err != nil {
@@ -26,7 +26,6 @@ func getCart(w http.ResponseWriter, r *http.Request) {
 			Value: id, // Replace with actual cart initialization logic
 			Path:  "/",
 		}
-		http.SetCookie(w, cartCookie)
 	}
 	fmt.Fprintf(w, "Cart: %s", cartCookie.Value)
 }
