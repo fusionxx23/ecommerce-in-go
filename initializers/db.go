@@ -5,13 +5,12 @@ import (
 	"log"
 	"os"
 
+	"github.com/fusionxx23/ecommerce-go/database"
 	"github.com/fusionxx23/ecommerce-go/models"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
-
-var DB *gorm.DB
 
 func ConnectDatabase() {
 	// Load environment variables from .env file
@@ -23,12 +22,18 @@ func ConnectDatabase() {
 	databaseURL := os.Getenv("DATABASE_URL")
 	fmt.Println(databaseURL)
 	// Establishing the connection
-	DB, err = gorm.Open(postgres.Open(databaseURL), &gorm.Config{})
+
+	database.DB, err = gorm.Open(postgres.Open(databaseURL), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("Unable to connect to database: %v\n", err)
 	}
 }
 
 func SyncDb() {
-	DB.AutoMigrate(&models.Cart{}, &models.CartItem{}, &models.CheckoutSession{}, &models.DeliveryInfo{}, &models.Order{}, &models.Product{}, &models.User{})
+	migrate := false
+	if migrate {
+		database.DB.AutoMigrate(&models.Cart{}, &models.CartItem{}, &models.CheckoutSession{}, &models.DeliveryInfo{}, &models.Order{}, &models.Product{}, &models.User{})
+	}
+	// change Chart id to text instead of int64 with GORM
+	// database.DB.Migrator().ColumnTypes(&models.Cart{})
 }
