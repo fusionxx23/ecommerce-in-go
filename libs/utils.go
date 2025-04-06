@@ -23,16 +23,15 @@ var (
 	key []byte
 )
 
-func ParseJWT(signedString string, claims jwt.MapClaims) {
+func ParseJWT(signedString string, claims jwt.MapClaims) (*jwt.Token, error) {
 	key = []byte("your-256-bit-secret") // Replace with your actual secret key
-	jwt.ParseWithClaims(signedString, claims, func(token *jwt.Token) (any, error) {
+	a, err := jwt.ParseWithClaims(signedString, claims, func(token *jwt.Token) (any, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 		return key, nil
 	})
-	fmt.Println(claims["sub"])
-
+	return a, err
 }
 
 func CreateJWT(user models.User) (string, error) {
