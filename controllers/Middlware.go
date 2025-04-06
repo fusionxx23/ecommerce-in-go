@@ -18,10 +18,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		// Validate the token (you can use your JWT library here)
 		parsedToken, err := libs.ParseJWT(token, claims)
 		if err != nil {
-			fmt.Println("Failed to parse JWT.")
-			ctx := r.Context()
-			ctx = context.WithValue(ctx, "email", nil) // ensure email is null
-			r = r.WithContext(ctx)
+			next.ServeHTTP(w, r)
 			return
 		}
 		if claims, ok := parsedToken.Claims.(jwt.MapClaims); ok {
@@ -29,12 +26,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
 			ctx := r.Context()
 			ctx = context.WithValue(ctx, "email", email)
 			r = r.WithContext(ctx)
-		} else {
-			ctx := r.Context()
-			ctx = context.WithValue(ctx, "email", nil) // ensure email is null
-			r = r.WithContext(ctx)
-		}
-		// Proceed to the next handler
+		} // Proceed to the next handler
 		next.ServeHTTP(w, r)
 	})
 }
