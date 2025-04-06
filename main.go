@@ -17,6 +17,7 @@ func init() {
 
 func main() {
 	r := mux.NewRouter()
+	r.Use(controllers.AuthMiddleware) // Apply the middleware to all routes
 	auth := r.PathPrefix("/auth").Subrouter()
 	cart := r.PathPrefix("/cart").Subrouter()
 	controllers.AuthHandler(auth)
