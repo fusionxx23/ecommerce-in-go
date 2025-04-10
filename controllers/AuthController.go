@@ -9,7 +9,6 @@ import (
 	"github.com/fusionxx23/ecommerce-go/database"
 	"github.com/fusionxx23/ecommerce-go/libs"
 	"github.com/fusionxx23/ecommerce-go/models"
-	"github.com/golang-jwt/jwt"
 	"github.com/gorilla/mux"
 	"github.com/markbates/goth/gothic"
 )
