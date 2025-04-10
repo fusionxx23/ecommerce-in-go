@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/fusionxx23/ecommerce-go/models"
@@ -44,4 +45,10 @@ func CreateJWT(user models.User) (string, error) {
 		})
 	s, err := t.SignedString(key)
 	return s, err
+}
+
+func SendJson(w http.ResponseWriter, data []byte) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(data)
 }
