@@ -7,11 +7,11 @@ import (
 
 type Product struct {
 	gorm.Model
-	ID              int64 `gorm:"primaryKey"`
-	Name            string
-	Price           string
+	ID              int64  `gorm:"primaryKey"`
+	Name            string `gorm:"not null"`
+	Price           string `gorm:"not null"`
 	Slug            string
-	Description     string
+	Description     string `gorm:"not null"`
 	ThumbnailID     int64
 	Thumbnail       ProductImage
 	ProductImages   []ProductImage
@@ -25,16 +25,16 @@ func InsertProduct(product *Product) error {
 	return nil
 }
 
-func DeleteProduct(db *gorm.DB, productID int64) error {
-	if err := db.Delete(&Product{}, productID).Error; err != nil {
+func DeleteProduct(productID int64) error {
+	if err := database.DB.Delete(&Product{}, productID).Error; err != nil {
 		return err
 	}
 	// find all ProductImages and delete them
-	if err := db.Where("product_id = ?", productID).Delete(&ProductImage{}).Error; err != nil {
+	if err := database.DB.Where("product_id = ?", productID).Delete(&ProductImage{}).Error; err != nil {
 		return err
 	}
 	// find all ProductVariants with ProductID relationship and delete them
-	if err := db.Where("product_id = ?", productID).Delete(&ProductVariant{}).Error; err != nil {
+	if err := database.DB.Where("product_id = ?", productID).Delete(&ProductVariant{}).Error; err != nil {
 		return err
 	}
 	return nil
