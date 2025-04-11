@@ -18,8 +18,8 @@ type Product struct {
 	ProductVariants []ProductVariant
 }
 
-func InsertProduct(db *gorm.DB, product *Product) error {
-	if err := db.Create(product).Error; err != nil {
+func InsertProduct(product *Product) error {
+	if err := database.DB.Create(product).Error; err != nil {
 		return err
 	}
 	return nil
