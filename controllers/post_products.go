@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/fusionxx23/ecommerce-go/models"
@@ -11,6 +12,7 @@ func postProduct(w http.ResponseWriter, r *http.Request) {
 	var product models.Product
 	err := json.NewDecoder(r.Body).Decode(&product)
 	if err != nil {
+		fmt.Println(err)
 		http.Error(w, "Invalid JSON", http.StatusBadRequest)
 		return
 	}
