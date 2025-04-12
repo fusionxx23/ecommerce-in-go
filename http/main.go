@@ -13,6 +13,7 @@ func init() {
 	initializers.ConnectDatabase()
 	initializers.SyncDb()
 	initializers.InitOAuth()
+	initializers.InitRabbitMQ()
 }
 
 func main() {
