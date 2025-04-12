@@ -1,0 +1,18 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    networks:
+      - internal_network
+  http:
+    build:
+      context: ./http
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    container_name: http-server
+    networks:
+      - internal_network
+networks:
+  internal_network:
+    driver: bridge
