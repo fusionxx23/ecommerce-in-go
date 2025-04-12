@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/fusionxx23/ecommerce-go/database"
-	"github.com/fusionxx23/ecommerce-go/libs"
-	"github.com/fusionxx23/ecommerce-go/models"
+	"github.com/fusionxx23/ecommerce-go/http/database"
+	"github.com/fusionxx23/ecommerce-go/http/libs"
+	"github.com/fusionxx23/ecommerce-go/http/models"
 	"github.com/gorilla/mux"
 	"github.com/markbates/goth/gothic"
 )

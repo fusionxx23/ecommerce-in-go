@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/fusionxx23/ecommerce-go/models"
+	"github.com/fusionxx23/ecommerce-go/http/models"
 )
 
 type RequestBody struct {

@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/fusionxx23/ecommerce-go/libs"
-	"github.com/fusionxx23/ecommerce-go/models"
+	"github.com/fusionxx23/ecommerce-go/http/libs"
+	"github.com/fusionxx23/ecommerce-go/http/models"
 	"github.com/gorilla/mux"
 )
 

@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/fusionxx23/ecommerce-go/database"
+	"github.com/fusionxx23/ecommerce-go/http/database"
 	"gorm.io/gorm"
 )
 

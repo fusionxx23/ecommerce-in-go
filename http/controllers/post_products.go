@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/fusionxx23/ecommerce-go/models"
+	"github.com/fusionxx23/ecommerce-go/http/models"
 )
 
 func postProduct(w http.ResponseWriter, r *http.Request) {

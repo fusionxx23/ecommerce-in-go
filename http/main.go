@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/fusionxx23/ecommerce-go/controllers"
-	"github.com/fusionxx23/ecommerce-go/initializers"
+	"github.com/fusionxx23/ecommerce-go/http/controllers"
+	"github.com/fusionxx23/ecommerce-go/http/initializers"
 	"github.com/gorilla/mux"
 )
 

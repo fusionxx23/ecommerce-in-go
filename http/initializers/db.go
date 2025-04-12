@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/fusionxx23/ecommerce-go/database"
-	"github.com/fusionxx23/ecommerce-go/models"
+	"github.com/fusionxx23/ecommerce-go/http/database"
+	"github.com/fusionxx23/ecommerce-go/http/models"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

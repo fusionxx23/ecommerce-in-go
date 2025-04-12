@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/fusionxx23/ecommerce-go/models"
+	"github.com/fusionxx23/ecommerce-go/http/models"
 	"github.com/golang-jwt/jwt"
 )
 
