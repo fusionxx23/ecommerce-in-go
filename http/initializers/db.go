@@ -32,7 +32,7 @@ func ConnectDatabase() {
 func SyncDb() {
 	migrate := false
 	if migrate {
-		database.DB.AutoMigrate(&models.Cart{}, &models.CartItem{}, &models.Product{}, &models.User{}, &models.ProductVariant{})
+		database.DB.AutoMigrate(&models.Cart{}, &models.CartItem{}, &models.Product{}, &models.User{}, &models.ProductVariant{}, &models.ProductImage{})
 	}
 	// change Chart id to text instead of int64 with GORM
 	// database.DB.Migrator().ColumnTypes(&models.Cart{})
