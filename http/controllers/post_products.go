@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"image"
@@ -12,6 +13,7 @@ import (
 	"github.com/chai2010/webp"
 	"github.com/fusionxx23/ecommerce-go/http/libs"
 	"github.com/fusionxx23/ecommerce-go/http/models"
+	"github.com/streadway/amqp"
 )
 
 func postProduct(w http.ResponseWriter, r *http.Request) {
@@ -94,10 +96,14 @@ func postProductImage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid product ID", http.StatusBadRequest)
 		return
 	}
-	productImage := models.ProductImage{ProductID: productID}
-	models.InsertProductImage(&productImage)
-	p := productImage.ImageId
-	i := strconv.FormatInt(p, 10)
-	libs.UploadS3Image(buffer, i+".webp")
+	err = libs.RabbitChannel.Publish("", "ImageQueue", false, false, amqp.Publishing{
+		ContentType: "application/json",
+		Body: fmt.Appendf(nil, `{"name": "%d", "bytes": "%s"}`, productID,
+			base64.StdEncoding.EncodeToString(webpBuffer.Bytes())),
+	})
+
+	if err != nil {
+		panic(err)
+	}
 	w.Write([]byte("Form data processed successfully"))
 }

@@ -24,7 +24,7 @@ func InitRabbitMQ() {
 		fmt.Println(err)
 		panic(err)
 	}
-	defer c.Close()
+	libs.RabbitChannel = c
 	_, err = c.QueueDeclare("ImageQueue", false, false, false, false, nil)
 	if err != nil {
 		fmt.Println(err)
