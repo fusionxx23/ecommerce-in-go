@@ -4,10 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"image"
 	"io"
 	"net/http"
 	"strconv"
 
+	"github.com/chai2010/webp"
 	"github.com/fusionxx23/ecommerce-go/http/libs"
 	"github.com/fusionxx23/ecommerce-go/http/models"
 )
@@ -69,7 +71,23 @@ func postProductImage(w http.ResponseWriter, r *http.Request) {
 	_, err = io.Copy(&buffer, imageFile)
 	if err != nil {
 		http.Error(w, "Unable to copy image file", http.StatusInternalServerError)
+		return
 	}
+	// Check if the file is a valid image
+	img, _, err := image.Decode(&buffer)
+	if err != nil {
+		http.Error(w, "Uploaded file is not a valid image", http.StatusBadRequest)
+		return
+	}
+
+	// Convert the image to WebP format
+	var webpBuffer bytes.Buffer
+	err = webp.Encode(&webpBuffer, img, &webp.Options{Lossless: true})
+	if err != nil {
+		http.Error(w, "Failed to convert image to WebP", http.StatusInternalServerError)
+		return
+	}
+
 	product_id := r.FormValue("product_id") // Replace "fieldName" with your form field name
 	productID, err := strconv.ParseInt(product_id, 10, 64)
 	if err != nil {
@@ -80,6 +98,6 @@ func postProductImage(w http.ResponseWriter, r *http.Request) {
 	models.InsertProductImage(&productImage)
 	p := productImage.ImageId
 	i := strconv.FormatInt(p, 10)
-	libs.UploadS3Image(buffer, i)
+	libs.UploadS3Image(buffer, i+".webp")
 	w.Write([]byte("Form data processed successfully"))
 }
