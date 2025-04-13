@@ -3,6 +3,7 @@ module github.com/fusionxx23/ecommerce-go/http
 go 1.24.1
 
 require (
+	github.com/aws/aws-sdk-go v1.55.6
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/gorilla/mux v1.8.1
 	github.com/gorilla/sessions v1.4.0
@@ -12,7 +13,10 @@ require (
 	gorm.io/gorm v1.25.12
 )
 
-require github.com/rabbitmq/amqp091-go v1.10.0 // indirect
+require (
+	github.com/jmespath/go-jmespath v0.4.0 // indirect
+	github.com/rabbitmq/amqp091-go v1.10.0 // indirect
+)
 
 require (
 	cloud.google.com/go/compute v1.20.1 // indirect

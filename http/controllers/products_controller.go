@@ -11,4 +11,5 @@ func ProductController(s *mux.Router) {
 	s.HandleFunc("/delete", deleteProduct).Methods("PUT")
 	s.HandleFunc("/variants", postProductVariant).Methods("POST")
 	s.HandleFunc("/variants/{id}", getProductVariants).Methods("GET")
+	s.HandleFunc("/images", postProductImage).Methods("POST")
 }
