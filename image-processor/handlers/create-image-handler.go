@@ -2,6 +2,8 @@ package handlers
 
 import (
 	"bytes"
+	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"image"
 	"image/jpeg"
@@ -13,6 +15,11 @@ import (
 	"github.com/streadway/amqp"
 )
 
+type ImagePayload struct {
+	Name  string `json:"name"`
+	Bytes string `json:"bytes"`
+}
+
 func HandleCreateImage(d amqp.Delivery) error {
 
 	headers := d.Headers
@@ -22,10 +29,21 @@ func HandleCreateImage(d amqp.Delivery) error {
 		return fmt.Errorf("cannot divide by zero")
 	}
 	log.Printf("Image ID: %v", imageID)
-	img, _, err := image.Decode(bytes.NewReader(d.Body))
+	var payload ImagePayload
+	err := json.Unmarshal(d.Body, &payload)
+	if err != nil {
+		log.Println("Error unmarshalling JSON:", err)
+		return fmt.Errorf("error parsing JSON")
+	}
+	imageBytes, err := decodeBase64(payload.Bytes)
+	if err != nil {
+		fmt.Println("Error decoding base 64:", err)
+		return fmt.Errorf("decoding base 64")
+	}
+	img, _, err := image.Decode(bytes.NewReader(imageBytes))
 	if err != nil {
 		fmt.Println("Error decoding image:", err)
-		return fmt.Errorf("cannot divide by zero")
+		return fmt.Errorf("decoding image")
 	}
 
 	// Determine if the image is portrait or landscape
@@ -73,4 +91,12 @@ func HandleCreateImage(d amqp.Delivery) error {
 	libs.UploadS3Image(img1260Buffer, imageID.(string)+"-1260.jpg")
 	models.UpdateProductImage(libs.DB, imageID.(string), orientation)
 	return nil
+}
+
+func decodeBase64(encodedStr string) ([]byte, error) {
+	decodedBytes, err := base64.StdEncoding.DecodeString(encodedStr)
+	if err != nil {
+		return nil, err
+	}
+	return decodedBytes, nil
 }
