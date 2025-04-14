@@ -85,7 +85,11 @@ func HandleCreateImage(d amqp.Delivery) error {
 	libs.UploadS3Image(img130Buffer, payload.Name+"-130.webp")
 	libs.UploadS3Image(img420Buffer, payload.Name+"-420.webp")
 	libs.UploadS3Image(img1260Buffer, payload.Name+"-1260.webp")
-	models.UpdateProductImage(libs.DB, payload.Name, orientation)
+	err = models.UpdateProductImage(libs.DB, payload.Name, orientation)
+	if err != nil {
+		fmt.Println("Error updating product image:", err)
+		return fmt.Errorf("updating product image in database")
+	}
 	return nil
 }
 
