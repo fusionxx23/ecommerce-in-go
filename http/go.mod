@@ -7,6 +7,7 @@ require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/gorilla/mux v1.8.1
 	github.com/gorilla/sessions v1.4.0
+	github.com/gosimple/slug v1.15.0
 	github.com/joho/godotenv v1.5.1
 	github.com/markbates/goth v1.81.0
 	github.com/streadway/amqp v1.1.0
@@ -15,6 +16,7 @@ require (
 )
 
 require (
+	github.com/gosimple/unidecode v1.0.1 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/rabbitmq/amqp091-go v1.10.0 // indirect
 )

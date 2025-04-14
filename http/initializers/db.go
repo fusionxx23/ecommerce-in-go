@@ -31,7 +31,7 @@ func ConnectDatabase() {
 }
 
 func SyncDb() {
-	migrate := false
+	migrate := true
 	if migrate {
 		database.DB.AutoMigrate(&models.Cart{}, &models.CartItem{}, &models.Product{}, &models.User{}, &models.ProductVariant{}, &models.ProductImage{})
 	}

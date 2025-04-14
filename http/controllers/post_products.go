@@ -13,12 +13,18 @@ import (
 	"github.com/chai2010/webp"
 	"github.com/fusionxx23/ecommerce-go/http/libs"
 	"github.com/fusionxx23/ecommerce-go/http/models"
+	"github.com/gosimple/slug"
 	"github.com/streadway/amqp"
 )
 
+func createSlug(title string) string {
+	return slug.Make(title)
+}
 func postProduct(w http.ResponseWriter, r *http.Request) {
 	var product models.Product
 	err := json.NewDecoder(r.Body).Decode(&product)
+	product.Slug = createSlug(product.Name)
+	fmt.Println(product.Slug, product)
 	if err != nil {
 		fmt.Println(err)
 		http.Error(w, "Invalid JSON", http.StatusBadRequest)

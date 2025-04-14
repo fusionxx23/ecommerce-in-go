@@ -10,7 +10,7 @@ type Product struct {
 	ID              int64  `gorm:"primaryKey"`
 	Name            string `gorm:"not null"`
 	Price           string `gorm:"not null"`
-	Slug            string
+	Slug            string `gorm:"not null"`
 	Description     string `gorm:"not null"`
 	ThumbnailID     int64
 	Thumbnail       ProductImage
