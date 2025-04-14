@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/fusionxx23/ecommerce-go/http/controllers"
 	"github.com/fusionxx23/ecommerce-go/http/initializers"
@@ -19,8 +20,16 @@ func init() {
 }
 
 func main() {
+
+	// get RABBITMQ_HOST from env
+	rabbitmqHost := os.Getenv("RABBITMQ_HOST")
+	// check if rabbitmqHost is empty
+	if rabbitmqHost == "" {
+		rabbitmqHost = "localhost"
+	}
+	connUrl := fmt.Sprintf("amqp://guest:guest@%s:5672/", rabbitmqHost)
 	// create RabbitMQ connection and create channel
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+	conn, err := amqp.Dial(connUrl)
 	if err != nil {
 		fmt.Println(err)
 		return

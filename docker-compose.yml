@@ -4,15 +4,37 @@ services:
     container_name: rabbitmq
     networks:
       - internal_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:15672"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
   http:
     build:
       context: ./http
       dockerfile: Dockerfile
+    environment:
+      - RABBITMQ_HOST=rabbitmq
     ports:
       - 8080:8080
     container_name: http-server
     networks:
       - internal_network
+    depends_on:
+      - rabbitmq
+    restart: on-failure
+  image-processor:
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+    build:
+      context: ./image-processor
+      dockerfile: Dockerfile
+    container_name: image-processor
+    networks:
+      - internal_network
+    depends_on:
+      - rabbitmq
+    restart: on-failure
 networks:
   internal_network:
     driver: bridge

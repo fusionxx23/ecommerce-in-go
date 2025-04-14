@@ -41,9 +41,17 @@ func init() {
 }
 
 func main() {
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+	// get RABBITMQ_HOST from env
+	rabbitmqHost := os.Getenv("RABBITMQ_HOST")
+	// check if rabbitmqHost is empty
+	if rabbitmqHost == "" {
+		rabbitmqHost = "localhost"
+	}
+	connUrl := fmt.Sprintf("amqp://guest:guest@%s:5672/", rabbitmqHost)
+	conn, err := amqp.Dial(connUrl)
 
 	if err != nil {
+		fmt.Println(err, "ERROR")
 		panic(err)
 	}
 	fmt.Println("Connected to RabbitMQ")
@@ -63,6 +71,7 @@ func main() {
 	forever := make(chan bool)
 	go func() {
 		for d := range msgs {
+			fmt.Println("recieved message")
 			err := handlers.HandleCreateImage(d)
 			if err != nil {
 				continue
