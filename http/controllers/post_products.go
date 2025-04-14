@@ -66,10 +66,9 @@ func postProductImage(w http.ResponseWriter, r *http.Request) {
 	}
 	defer imageFile.Close()
 
-	// Create a bytes.Buffer
 	var buffer bytes.Buffer
 
-	// Copy the file content into the buffer
+	// Copy the form file content into the buffer
 	_, err = io.Copy(&buffer, imageFile)
 	if err != nil {
 		http.Error(w, "Unable to copy image file", http.StatusInternalServerError)
@@ -90,7 +89,7 @@ func postProductImage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	product_id := r.FormValue("product_id") // Replace "fieldName" with your form field name
+	product_id := r.FormValue("product_id")
 	productID, err := strconv.ParseInt(product_id, 10, 64)
 	if err != nil {
 		http.Error(w, "Invalid product ID", http.StatusBadRequest)
