@@ -96,14 +96,18 @@ func postProductImage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid product ID", http.StatusBadRequest)
 		return
 	}
+	fmt.Println(productID, "Product ID")
+	p := models.ProductImage{ProductID: productID}
+	models.InsertProductImage(&p)
 	err = libs.RabbitChannel.Publish("", "ImageQueue", false, false, amqp.Publishing{
 		ContentType: "application/json",
-		Body: fmt.Appendf(nil, `{"name": "%d", "bytes": "%s"}`, productID,
+		Body: fmt.Appendf(nil, `{"name": "%d", "bytes": "%s"}`, p.ImageId,
 			base64.StdEncoding.EncodeToString(webpBuffer.Bytes())),
 	})
-
 	if err != nil {
-		panic(err)
+		fmt.Println("Failed to publish a message:", err)
 	}
+
+	fmt.Println("Sent Message")
 	w.Write([]byte("Form data processed successfully"))
 }

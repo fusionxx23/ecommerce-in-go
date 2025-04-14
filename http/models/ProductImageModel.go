@@ -11,6 +11,7 @@ type ProductImage struct {
 	ImageId     int64  `gorm:"not null;autoIncrement"`
 	ProductID   int64  `gorm:"not null"`
 	Orientation string // "landscape" or "portrait"
+	Optimized   bool   `gorm:"default:false"` // true if the image has been optimized
 }
 
 func InsertProductImage(productImage *ProductImage) error {

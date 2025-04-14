@@ -27,6 +27,7 @@ func ConnectDatabase() {
 	if err != nil {
 		log.Fatalf("Unable to connect to database: %v\n", err)
 	}
+	fmt.Println("Connected to database")
 }
 
 func SyncDb() {

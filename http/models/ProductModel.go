@@ -42,14 +42,14 @@ func DeleteProduct(productID int64) error {
 
 func SelectProductFromSlug(slug string) (Product, error) {
 	product := Product{}
-	if err := database.DB.Model(&Product{}).Where("id = ?", slug).First(&product).Error; err != nil {
+	if err := database.DB.Model(&Product{}).Preload("ProductImages").Preload("ProductVariants").Where("id = ?", slug).First(&product).Error; err != nil {
 		return Product{}, err
 	}
 	return product, nil
 }
 func SelectAllProducts() ([]Product, error) {
 	products := []Product{}
-	if err := database.DB.Model(&Product{}).Find(&products).Error; err != nil {
+	if err := database.DB.Model(&Product{}).Preload("ProductImages").Preload("ProductVariants").Find(&products).Error; err != nil {
 		return nil, err
 	}
 	return products, nil
