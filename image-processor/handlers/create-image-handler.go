@@ -5,9 +5,10 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"image"
 	"image/jpeg"
 	"log"
+
+	"golang.org/x/image/webp"
 
 	"github.com/fusionxx23/ecommerce-go/image-processor/libs"
 	"github.com/fusionxx23/ecommerce-go/image-processor/models"
@@ -22,30 +23,25 @@ type ImagePayload struct {
 
 func HandleCreateImage(d amqp.Delivery) error {
 
-	headers := d.Headers
-	imageID, ok := headers["image-id"]
-	if !ok {
-		log.Println("image-id header not found")
-		return fmt.Errorf("cannot divide by zero")
-	}
-	log.Printf("Image ID: %v", imageID)
 	var payload ImagePayload
 	err := json.Unmarshal(d.Body, &payload)
 	if err != nil {
 		log.Println("Error unmarshalling JSON:", err)
 		return fmt.Errorf("error parsing JSON")
 	}
+	fmt.Println("Unmarshalled")
 	imageBytes, err := decodeBase64(payload.Bytes)
 	if err != nil {
 		fmt.Println("Error decoding base 64:", err)
 		return fmt.Errorf("decoding base 64")
 	}
-	img, _, err := image.Decode(bytes.NewReader(imageBytes))
+	img, err := webp.Decode(bytes.NewReader(imageBytes))
 	if err != nil {
 		fmt.Println("Error decoding image:", err)
 		return fmt.Errorf("decoding image")
 	}
 
+	fmt.Println("Decoded")
 	// Determine if the image is portrait or landscape
 	bounds := img.Bounds()
 	orientation := ""
@@ -58,7 +54,7 @@ func HandleCreateImage(d amqp.Delivery) error {
 	}
 
 	if orientation == "landscape" { // no need to optimize landscape picture
-		models.UpdateProductImage(libs.DB, imageID.(string), orientation)
+		models.UpdateProductImage(libs.DB, payload.Name, orientation)
 
 		return fmt.Errorf("cannot divide by zero")
 	}
@@ -86,10 +82,10 @@ func HandleCreateImage(d amqp.Delivery) error {
 		fmt.Printf("Failed to encode resized image 1260: %v\n", err)
 		return fmt.Errorf("failed to encode")
 	}
-	libs.UploadS3Image(img130Buffer, imageID.(string)+"-130.jpg")
-	libs.UploadS3Image(img420Buffer, imageID.(string)+"-420.jpg")
-	libs.UploadS3Image(img1260Buffer, imageID.(string)+"-1260.jpg")
-	models.UpdateProductImage(libs.DB, imageID.(string), orientation)
+	libs.UploadS3Image(img130Buffer, payload.Name+"-130.webp")
+	libs.UploadS3Image(img420Buffer, payload.Name+"-420.webp")
+	libs.UploadS3Image(img1260Buffer, payload.Name+"-1260.webp")
+	models.UpdateProductImage(libs.DB, payload.Name, orientation)
 	return nil
 }
 
