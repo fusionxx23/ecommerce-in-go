@@ -3,20 +3,15 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"image"
-	"image/jpeg"
 	"log"
 	"os"
-	"weak"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/fusionxx23/ecommerce-go/image-processor/handlers"
 	"github.com/fusionxx23/ecommerce-go/image-processor/libs"
-	"github.com/fusionxx23/ecommerce-go/image-processor/models"
 	"github.com/joho/godotenv"
-	"github.com/nfnt/resize"
 	"github.com/streadway/amqp"
 	"gorm.io/gorm"
 
@@ -51,6 +46,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println("Connected to RabbitMQ")
 	defer conn.Close()
 
 	ch, err := conn.Channel()
