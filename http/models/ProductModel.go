@@ -7,15 +7,17 @@ import (
 
 type Product struct {
 	gorm.Model
-	ID              int64  `gorm:"primaryKey"`
-	Name            string `gorm:"not null"`
-	Price           string `gorm:"not null"`
-	Slug            string `gorm:"not null"`
-	Description     string `gorm:"not null"`
-	ThumbnailID     int64
-	Thumbnail       ProductImage
-	ProductImages   []ProductImage
-	ProductVariants []ProductVariant
+	ID                   int64  `gorm:"primaryKey"`
+	Name                 string `gorm:"not null"`
+	Price                string `gorm:"not null"`
+	Slug                 string `gorm:"not null"`
+	Description          string `gorm:"not null"`
+	SecondaryThumbnailId int64
+	ThumbnailID          int64
+	Thumbnail            ProductImage
+	SecondaryThumbnail   ProductImage
+	ProductImages        []ProductImage
+	ProductVariants      []ProductVariant
 }
 
 func InsertProduct(product *Product) error {
@@ -47,9 +49,14 @@ func SelectProductFromSlug(slug string) (Product, error) {
 	}
 	return product, nil
 }
-func SelectAllProducts() ([]Product, error) {
+func SelectAllProducts(limit int, offset int) ([]Product, error) {
 	products := []Product{}
-	if err := database.DB.Model(&Product{}).Preload("ProductImages").Preload("ProductVariants").Find(&products).Error; err != nil {
+	if err := database.DB.Model(&Product{}).
+		Preload("ProductImages").
+		Preload("ProductVariants").
+		Limit(limit).
+		Offset(offset).
+		Find(&products).Error; err != nil {
 		return nil, err
 	}
 	return products, nil
