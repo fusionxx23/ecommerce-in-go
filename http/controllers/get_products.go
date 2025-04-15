@@ -12,7 +12,21 @@ import (
 )
 
 func getProducts(w http.ResponseWriter, r *http.Request) {
-	products, err := models.SelectAllProducts()
+
+	query := r.URL.Query()
+	limitStr := query.Get("limit")
+	offsetStr := query.Get("offset")
+
+	limit, err := strconv.Atoi(limitStr)
+	if err != nil {
+		limit = 0 // Default value
+	}
+
+	offset, err := strconv.Atoi(offsetStr)
+	if err != nil {
+		offset = 0 // Default value
+	}
+	products, err := models.SelectAllProducts(limit, offset)
 	if err != nil {
 		http.Error(w, "Error fetching products", http.StatusInternalServerError)
 		return
