@@ -7,6 +7,7 @@ import (
 func ProductController(s *mux.Router) {
 	s.HandleFunc("", getProducts).Methods("GET")
 	s.HandleFunc("/{slug}", getProductFromSlug).Methods("GET")
+	s.HandleFunc("/thumbnails", updateThumbnails).Methods("PUT")
 	s.HandleFunc("", postProduct).Methods("POST")
 	s.HandleFunc("/delete", deleteProduct).Methods("PUT")
 	s.HandleFunc("/variants", postProductVariant).Methods("POST")

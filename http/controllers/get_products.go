@@ -14,6 +14,7 @@ import (
 func getProducts(w http.ResponseWriter, r *http.Request) {
 
 	query := r.URL.Query()
+
 	limitStr := query.Get("limit")
 	offsetStr := query.Get("offset")
 

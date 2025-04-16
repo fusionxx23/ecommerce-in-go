@@ -14,6 +14,17 @@ type ProductImage struct {
 	Optimized   bool   `gorm:"default:false"` // true if the image has been optimized
 }
 
+func GetProductImage(imageId int64) (ProductImage, error) {
+	var productImage ProductImage
+	// get product image from id
+	err := database.DB.Model(&ProductImage{}).Where("id = ?", imageId).First(&productImage).Error
+	if err != nil {
+		return ProductImage{}, err
+	}
+
+	return productImage, nil
+}
+
 func InsertProductImage(productImage *ProductImage) error {
 	tx := database.DB.Create(productImage)
 	err := tx.Error

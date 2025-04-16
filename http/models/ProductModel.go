@@ -24,6 +24,7 @@ func InsertProduct(product *Product) error {
 	if err := database.DB.Create(product).Error; err != nil {
 		return err
 	}
+
 	return nil
 }
 
@@ -49,10 +50,10 @@ func SelectProductFromSlug(slug string) (Product, error) {
 	}
 	return product, nil
 }
+
 func SelectAllProducts(limit int, offset int) ([]Product, error) {
 	products := []Product{}
 	if err := database.DB.Model(&Product{}).
-		Preload("ProductImages").
 		Preload("ProductVariants").
 		Limit(limit).
 		Offset(offset).
@@ -60,4 +61,18 @@ func SelectAllProducts(limit int, offset int) ([]Product, error) {
 		return nil, err
 	}
 	return products, nil
+}
+
+func UpdateThumbnailOne(productID int64, thumbnailID int64) error {
+	if err := database.DB.Model(&Product{}).Where("id = ?", productID).Update("thumbnail_id", thumbnailID).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func UpdateThumbnailTwo(productID int64, thumbnailID int64) error {
+	if err := database.DB.Model(&Product{}).Where("id = ?", productID).Update("secondary_thumbnail_id", thumbnailID).Error; err != nil {
+		return err
+	}
+	return nil
 }
