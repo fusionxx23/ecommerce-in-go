@@ -54,6 +54,7 @@ func main() {
 	r := mux.NewRouter()
 	auth := r.PathPrefix("/auth").Subrouter()
 	cart := r.PathPrefix("/cart").Subrouter()
+	categories := r.PathPrefix("/categories").Subrouter()
 	products := r.PathPrefix("/products").Subrouter()
 	controllers.AuthHandler(auth)
 	controllers.CartHandler(cart)
